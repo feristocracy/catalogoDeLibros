@@ -5,114 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="script.js" type="module"></script>
-    <title>Catálogo de Libros</title>
-
+    <title>Inicio de sesión</title>
 </head>
-<body style="background-color: rgba(215, 250, 232, 0.432);">
-    
-    <div class="container" id="form">
-        <h1 class="text-center my-5">📑 Catálogo de Libros 📖</h1>
-        <form class="row" id="searchForm">
-            <input type="text" placeholder="Busca por Título" class="search col form-control m-1">
-            <input type="text" placeholder="Busca por Autor" class="search col form-control m-1">
-            <input type="text" placeholder="Busca por Editorial" class="search col form-control m-1">
-            <input type="text" placeholder="Busca por Año" class="search col form-control m-1">
-            <button class="btn block btn-primary my-2 mx-1" type="submit">🔍Buscar</button>
+<body style="background-color: rgb(152, 223, 204);">
+    <div class="container">
+        <h1 class="text-center mt-5">Catálogo de Libros</h1>
+        <h2 class="text-center my-2">Iniciar Sesión</h2>
+        <form class="w-25 center mx-auto">
+            <div class="form-group text-center">
+            <label for="inputEmail">Usuario</label>
+            <input class="form-control my-1 w-2" type="email" placeholder="Ingrese su correo" required>
+            </div>
+            <div class="form-group text-center mt-3">
+            <label for="inputPassword">Contraseña</label>
+            <input class="form-control my-1" type="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <div class="row">
+            <button type="submit" class="col btn btn-primary mt-3 block">Ingresar</button>
+            </div>
         </form>
-        <div class="row">
-            <button class="btn col btn-warning my-2 mx-1"">📚Ver todos</button>
-            <button class="btn col btn-success my-2 mx-1">➕Nuevo</button>
-        </div>    
+        
     </div>
-
-<!-- ADD BOOK -->
-<div class="container" id = "showForm" style="display: none;">
-    <h2 class="text-center my-3">✒Agregar nuevo libro📔</h2>
-    <form class="container" id="addForm">
-        <div class="row">
-        <input type="text" class="add form-control col m-1" placeholder="Título" required>
-        <input type="text" class="add form-control col m-1" placeholder="Autor" required>
-        <div class="w-100"></div>
-        <input type="text" class="add form-control col m-1" placeholder="Editorial" required>
-        <input type="number" min="1900" max="2099" step="1" value="2022" class="add col m-1 form-control" placeholder="Año" required>
-        <div class="w-100"></div>
-        <button class="col m-1 btn btn-info" type="submit">💾Guardar</button>
-        <button class="col m-1 btn btn-danger" type="reset">Limpiar</button>
-        </div>
-    </form>
-</div>
-<!-- end addbook -->
-
-<!-- EDIT BOOK -->
-<div class="container" id = "showEditForm" style="display: none;">
-    <h2 class="text-center my-3">✒Editar libro📔</h2>
-    <form class="container" id="editForm">
-        <div class="row">
-        <input type="text" class="edi form-control col m-1" placeholder="Título Nuevo" required>
-        <input type="text" class="edi form-control col m-1" placeholder="Autor Nuevo" required>
-        <div class="w-100"></div>
-        <input type="text" class="edi form-control col m-1" placeholder="Editorial Nueva" required>
-        <input type="number" min="1900" max="2099" step="1" value="2022" class="edi col m-1 form-control" placeholder="Año Nuevo" required>
-        <div class="w-100"></div>
-        <button class="col m-1 btn btn-info" type="submit">💾Guardar</button>
-        <button class="cancelButton col m-1 btn btn-danger">❌Cancelar</button>
-        </div>
-    </form>
-</div>
-<!-- end editbook -->
-
-    <div class="container my-4">
-        <div id="bookshelf" style="display: none;"></div>
-    </div>
-
-    <div class="container my-2">
-        <div class="d-flex" id="DB">
-            <input type="file" id="loadFile" hidden="hidden"></input>
-            <button class="my-2 mx-2 ms-auto btn btn-outline-secondary" id="loadFile2">📥Importar BD</button>
-            <button class="my-2 btn btn-outline-dark">📤Exportar BD</button>
-        </div>
-
-    </div>
-    <footer class="bg-light text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(197, 194, 194, 0.536); font-size: 12px;">
-          © 2022 Feristocracy
-          <a class="text-dark" href="https://github.com/feristocracy" target="_blank">Github</a>
-        </div>
-        <!-- Copyright -->
-    </footer>
-
-
-    <!----------------------------------------- Templates ------------------------------------------->
-<!-- BOOKSHELF-->
-<template id="template">
-    <div class="mx-3 mt-2 mb-0 p-1 alert alert-warning align-items-center d-flex">
-        <div class="m-0 p-1">
-            <p class="m-0 p-0" style="font-size: 10px;" id="title">Título: "En un Rincón del Llano"</p>
-            <p class="m-0 p-0" style="font-size: 10px;" id="author">Autor: Ramón Montes Barreto</p>
-        </div>
-        <div class="m-2 pl-2">
-            <p class="m-0 p-0" style="font-size: 10px;" id="publishing">Editorial: Planeta</p>
-            <p class="m-0 p-0" style="font-size: 10px;" id="year">Año: 2021</p>
-        </div>
-        <h3 class="m-0 d-inline-block ms-auto">
-            <i id = "firstB" class="fas fa-solid fa-plus-circle text-success mr-auto p-2" role="button" title="Apartar Libro"></i>
-            <i class="fas fa-solid fa-edit text-primary mr-auto p-2" role="button" title="Editar"></i>
-            <i class="fas fa-solid fa-circle-minus text-danger mr-auto p-2" role="button" title="Dar de baja"></i>
-        </h3>
-    </div>
-    <div style="margin: 0px 0px 10px 15px;"><small class="lh-1" style="font-size: 10px; display: block; padding: 0px 5px;" id="disponibilidad">Disponible</small></div>
-</template>
-<!-- end bookshelf -->
-
-
-
-
-
-<!-- Scripts -->
-<script src="script.js" type="module"></script>
-
+    
 </body>
 </html>

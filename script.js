@@ -7,10 +7,12 @@ const inputTitle = document.querySelectorAll(".add")[0];
 const inputAuthor = document.querySelectorAll(".add")[1];
 const inputPublishing = document.querySelectorAll(".add")[2];
 const inputYear = document.querySelectorAll(".add")[3];
+const inputInventory = document.querySelectorAll(".add")[4];
 const inputTitleEdit = document.querySelectorAll(".edi")[0];
 const inputAuthorEdit = document.querySelectorAll(".edi")[1];
 const inputPublishingEdit = document.querySelectorAll(".edi")[2];
 const inputYearEdit = document.querySelectorAll(".edi")[3];
+const inputInventoryEdit = document.querySelectorAll(".edi")[4];
 const inputTitleSearch = document.querySelectorAll(".search")[0];
 const inputAuthorSearch = document.querySelectorAll(".search")[1];
 const inputPublishingSearch = document.querySelectorAll(".search")[2];
@@ -24,6 +26,7 @@ const loadFile = document.getElementById("loadFile"); // to import CSV
 const loadFile2 = document.getElementById("loadFile2"); //
 const showEditForm = document.getElementById("showEditForm"); // div of edit book
 const editForm = document.getElementById("editForm"); // div of form
+
 /*----------------------------------------------*/
 
 let tempID = 0; //temporary id for updating purposes
@@ -83,6 +86,7 @@ const addBook = e =>{ //adds a new book
                                 author: inputAuthor.value, //
                                 publishing: inputPublishing.value, //
                                 year: inputYear.value, //
+                                inventory: inputInventory.value, //
                                 available: true
                                 }
 
@@ -96,6 +100,8 @@ const editBook = e =>  { //edit the selected book
                         books[tempID].author = inputAuthorEdit.value; 
                         books[tempID].publishing = inputPublishingEdit.value;
                         books[tempID].year = inputYearEdit.value;
+                        books[tempID].inventory = inputInventoryEdit.value;
+                        if (books[tempID].inventory >= 1) {books[tempID].available = true;}
                         editForm.reset(); // we reset our form
                         showEditForm.style.display = "none";
                         showAllBooks();
@@ -118,13 +124,15 @@ const showAllBooks = e =>   {
                                                                 clone.querySelector("#author").textContent = "Autor: " + book.author ; 
                                                                 clone.querySelector("#publishing").textContent = "Editorial: " + book.publishing; 
                                                                 clone.querySelector("#year").textContent = "Año: " + book.year;
-                                                                clone.querySelector("#disponibilidad").textContent = "Disponible" 
+                                                                clone.querySelector("#disponibilidad").textContent = "Disponibles: " + book.inventory;
+                                                                if(book.inventory == 0) {
+                                                                                        book.available = false;
+                                                                                        }
                                                                 if (book.available == false){ // if the book isnt available
                                                                                             clone.querySelector(".alert").classList.replace("alert-warning", "alert-secondary");
                                                                                             clone.querySelector(".fa-plus-circle").classList.replace("fa-plus-circle", "fa-rotate-left");
                                                                                             clone.getElementById("firstB").setAttribute("title", "Devolver libro");
                                                                                             clone.querySelector(".text-success").classList.replace("text-success", "text-dark");
-                                                                                            clone.querySelector("#disponibilidad").textContent = "No disponible"
                                                                                             }
                                                                 clone.querySelectorAll(".fas")[0].dataset.id = book.id; // references green plus button 
                                                                 clone.querySelectorAll(".fas")[1].dataset.id = book.id; // references edit blue button 
@@ -178,12 +186,21 @@ document.getElementById("loadFile").addEventListener("change", readFile, false);
 
 const actionButtons = e =>  { // we set the action for every circle button
                             if (e.target.classList.contains("fa-plus-circle"))  { // if we click green plus button
+                                                                               /*  if (books[e.target.dataset.id].inventory == 0) { // if there's no books, is not available
+                                                                                                                        books[e.target.dataset.id].available = false;
+                                                                                                                        showAllBooks();
+                                                                                                                        return;
+                                                                                                                                } */
+                                                                                
+                                                                                books[e.target.dataset.id].inventory--;
                                                                                 books[e.target.dataset.id].available = false;
                                                                                 showAllBooks();
                                                                                 return;
                                                                                 }
                             if (e.target.classList.contains("fa-rotate-left")) { // if we click blue edit button
                                                                         books[e.target.dataset.id].available = true;
+                                                                        books[e.target.dataset.id].inventory++;
+
                                                                         showAllBooks();
                                                                         return;
                                                                         }
@@ -198,6 +215,7 @@ const actionButtons = e =>  { // we set the action for every circle button
                                                                         editForm.querySelectorAll("input")[1].value = books[e.target.dataset.id].author;
                                                                         editForm.querySelectorAll("input")[2].value = books[e.target.dataset.id].publishing;
                                                                         editForm.querySelectorAll("input")[3].value = books[e.target.dataset.id].year;
+                                                                        editForm.querySelectorAll("input")[4].value = books[e.target.dataset.id].inventory;
                                                                         tempID = e.target.dataset.id;
                                                                         }
                             }
