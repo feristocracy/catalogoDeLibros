@@ -7,6 +7,14 @@ const inputTitle = document.querySelectorAll(".add")[0];
 const inputAuthor = document.querySelectorAll(".add")[1];
 const inputPublishing = document.querySelectorAll(".add")[2];
 const inputYear = document.querySelectorAll(".add")[3];
+const inputTitleEdit = document.querySelectorAll(".edi")[0];
+const inputAuthorEdit = document.querySelectorAll(".edi")[1];
+const inputPublishingEdit = document.querySelectorAll(".edi")[2];
+const inputYearEdit = document.querySelectorAll(".edi")[3];
+const inputTitleSearch = document.querySelectorAll(".search")[0];
+const inputAuthorSearch = document.querySelectorAll(".search")[1];
+const inputPublishingSearch = document.querySelectorAll(".search")[2];
+const inputYearSearch = document.querySelectorAll(".search")[3];
 const mainMenu = document.getElementById("mainMenu");
 const form = document.getElementById("form");
 const newButton = document.querySelector(".btn-success");
@@ -18,6 +26,7 @@ const showEditForm = document.getElementById("showEditForm"); // div of edit boo
 const editForm = document.getElementById("editForm"); // div of form
 /*----------------------------------------------*/
 
+let tempID = 0; //temporary id for updating purposes
 let books = { }; // initializing object collection
 let clickNew = 0;
 let clickShow = 0;
@@ -56,12 +65,21 @@ addForm.addEventListener("submit", e => { // listens Add button
                                         addBook(e); // add the book
                                         });
 
+editForm.addEventListener("submit", e => { // listens Edit button
+                                        e.preventDefault(); //prevents default behavior
+                                        editBook(e); // add the book
+                                        });
+
+editForm.addEventListener("click", e => {
+                                        editMenuButtons(e);
+                                        })
 
 
-const addBook = e =>{
+
+const addBook = e =>{ //adds a new book
                     const book ={
                                 id: Date.now(),
-                                title: inputTitle.value, //ver cómo tomar un dato de cada celda
+                                title: inputTitle.value, // takes the input value
                                 author: inputAuthor.value, //
                                 publishing: inputPublishing.value, //
                                 year: inputYear.value, //
@@ -72,6 +90,17 @@ const addBook = e =>{
                     addForm.reset(); // we reset our form
                     showAllBooks();
                     }
+
+const editBook = e =>  { //edit the selected book
+                        books[tempID].title = inputTitleEdit.value;
+                        books[tempID].author = inputAuthorEdit.value; 
+                        books[tempID].publishing = inputPublishingEdit.value;
+                        books[tempID].year = inputYearEdit.value;
+                        editForm.reset(); // we reset our form
+                        showEditForm.style.display = "none";
+                        showAllBooks();
+                        }
+
 
 const showAllBooks = e =>   {
                             bookshelf.removeAttribute("style");
@@ -165,29 +194,12 @@ const actionButtons = e =>  { // we set the action for every circle button
                                                                                 }
                             if (e.target.classList.contains("fa-edit")) { // if we click edit button // BUG-----------
                                                                         showEditForm.removeAttribute("style");
-                                                                        editForm.querySelectorAll("input")[0].value = books[id].title;
-                                                                        editForm.querySelectorAll("input")[1].value = books[id].author;
-                                                                        editForm.querySelectorAll("input")[2].value = books[id].publishing;
-                                                                        editForm.querySelectorAll("input")[3].value = books[id].year;
-                                                                        editForm.addEventListener("submit", e => { // listens Add button
-                                                                            e.preventDefault(); //prevents default behavior
-                                                                            editBook(e); // add the book
-                                                                            });
-                                                                                const editBook = id =>  { //edit the book selected
-                                                                                                    const book ={
-                                                                                                        id: id,
-                                                                                                        title: editForm.querySelectorAll("input")[0].value, //ver cómo tomar un dato de cada celda
-                                                                                                        author: editForm.querySelectorAll("input")[1].value, //
-                                                                                                        publishing: editForm.querySelectorAll("input")[2].value, //
-                                                                                                        year: editForm.querySelectorAll("input")[3].value, //
-                                                                                                        available: id.available //
-                                                                                                        }
-                                                                                                        }
-                                                                        
-                                                                        editBook(e.target.dataset.id);
-                                                                        return;
+                                                                        editForm.querySelectorAll("input")[0].value = books[e.target.dataset.id].title;
+                                                                        editForm.querySelectorAll("input")[1].value = books[e.target.dataset.id].author;
+                                                                        editForm.querySelectorAll("input")[2].value = books[e.target.dataset.id].publishing;
+                                                                        editForm.querySelectorAll("input")[3].value = books[e.target.dataset.id].year;
+                                                                        tempID = e.target.dataset.id;
                                                                         }
-                            e.stopPropagation();
                             }
 
 const menuButtons = e =>{
@@ -219,3 +231,9 @@ const dbButtons = e =>  {
                                                                             }
                         e.stopPropagation();
                         }
+
+const editMenuButtons = e =>{ // if we click on a button of the edit book menu
+                            if (e.target.classList.contains("cancelButton")){ // if we click cancel button
+                                                                            showEditForm.style.display = "none";
+                                                                            }
+                            }

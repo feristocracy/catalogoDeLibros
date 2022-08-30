@@ -14,9 +14,12 @@
     
     <div class="container" id="form">
         <h1 class="text-center my-5">📑 Catálogo de Libros 📖</h1>
-        <form class="row">
-            <input type="text" placeholder="Escribe un título..." class="form-control my-2">
-            <button class="btn col btn-primary my-2 mx-1" >🔍Buscar</button>
+        <form class="row" id="searchForm">
+            <input type="text" placeholder="Busca por Título" class="search col form-control m-1">
+            <input type="text" placeholder="Busca por Autor" class="search col form-control m-1">
+            <input type="text" placeholder="Busca por Editorial" class="search col form-control m-1">
+            <input type="text" placeholder="Busca por Año" class="search col form-control m-1">
+            <button class="btn block btn-primary my-2 mx-1" type="submit">🔍Buscar</button>
         </form>
         <div class="row">
             <button class="btn col btn-warning my-2 mx-1"">📚Ver todos</button>
@@ -32,7 +35,7 @@
         <input type="text" class="add form-control col m-1" placeholder="Título" required>
         <input type="text" class="add form-control col m-1" placeholder="Autor" required>
         <div class="w-100"></div>
-        <input type="text" class="add form-control col m-1" placeholder=Editorial required>
+        <input type="text" class="add form-control col m-1" placeholder="Editorial" required>
         <input type="number" min="1900" max="2099" step="1" value="2022" class="add col m-1 form-control" placeholder="Año" required>
         <div class="w-100"></div>
         <button class="col m-1 btn btn-info" type="submit">💾Guardar</button>
@@ -47,14 +50,14 @@
     <h2 class="text-center my-3">✒Editar libro📔</h2>
     <form class="container" id="editForm">
         <div class="row">
-        <input type="text" class="add form-control col m-1" placeholder="Título" required id="searchAuthor">
-        <input type="text" class="add form-control col m-1" placeholder="Autor" required>
+        <input type="text" class="edi form-control col m-1" placeholder="Título Nuevo" required>
+        <input type="text" class="edi form-control col m-1" placeholder="Autor Nuevo" required>
         <div class="w-100"></div>
-        <input type="text" class="add form-control col m-1" placeholder=Editorial required>
-        <input type="number" min="1900" max="2099" step="1" value="2022" class="add col m-1 form-control" placeholder="Año" required>
+        <input type="text" class="edi form-control col m-1" placeholder="Editorial Nueva" required>
+        <input type="number" min="1900" max="2099" step="1" value="2022" class="edi col m-1 form-control" placeholder="Año Nuevo" required>
         <div class="w-100"></div>
         <button class="col m-1 btn btn-info" type="submit">💾Guardar</button>
-        <button class="col m-1 btn btn-danger" type="reset">Limpiar</button>
+        <button class="cancelButton col m-1 btn btn-danger">❌Cancelar</button>
         </div>
     </form>
 </div>
