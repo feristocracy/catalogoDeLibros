@@ -37,7 +37,7 @@ let users = { }; //initializing user role
 let clickNew = 0;
 let clickShow = 0;
 let queryResult = 0; //if there's no results on the searchform
-
+let admin = true;
 
 loadFile2.addEventListener("click", function() { loadFile.click();}) //
 
@@ -45,13 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
                                                     if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
                                                                                         books = JSON.parse(localStorage.getItem("books"));
                                                                                         users = JSON.parse(localStorage.getItem("users"));
-                                                                                        let admin = users[3].adminRole;
-                                                                                        console.log(admin);
                                                                                         //Test place                                                                                        
                                                                                         }
+                                                    admin = users[3].adminRole;
+                                                    if (admin == false) {
+                                                                        document.querySelectorAll(".admin")[0].style.display = "none";
+                                                                        document.querySelectorAll(".admin")[1].style.display = "none";
+                                                                        document.querySelectorAll(".admin")[2].style.display = "none";
+                                                                        }
                                                     });
+                                                
 
-
+                                                    
+                                                        
 
 //-------------------EXPORT--------------------//
 const download = function(data) { // descarga el archivo en formato csv
@@ -290,8 +296,17 @@ const showAllBooks = e =>   { //show all books in bookshelf
                                                                 clone.querySelectorAll(".fas")[1].dataset.id = book.id; // references edit blue button 
                                                                 clone.querySelectorAll(".fas")[2].dataset.id = book.id; // references red minus button
                                                                 clone.getElementById("disponibilidad").dataset.id = book.id;
+                                                                if (admin == false) { // if the user isnt admin these buttons doesnt show
+                                                                                    clone.getElementById("edit").style="display: none;"
+                                                                                    clone.getElementById("delete").style="display: none;"
+                                                                                    }
                                                                 fragment.appendChild(clone);
+                                                                /* if (admin == false) {
+                                                                    document.getElementById("edit").style.display = "none";
+                                                                    document.getElementById("delete").style.display = "none";
+                                                                    } */
                                                                 }});
+                            
                             bookshelf.appendChild(fragment);
                             }
 

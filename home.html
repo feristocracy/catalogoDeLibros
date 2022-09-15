@@ -23,7 +23,7 @@
         </form>
         <div class="row">
             <button class="btn col btn-warning my-2 mx-1"">📚Ver todos</button>
-            <button class="btn col btn-success my-2 mx-1">➕Nuevo</button>
+            <button class="admin btn col btn-success my-2 mx-1">➕Nuevo</button>
         </div>    
     </div>
 
@@ -72,8 +72,8 @@
     <div class="container my-2">
         <div class="d-flex" id="DB">
             <input type="file" id="loadFile" hidden="hidden"></input>
-            <button class="my-2 mx-2 ms-auto btn btn-outline-secondary" id="loadFile2">📥Importar BD</button>
-            <button class="my-2 btn btn-outline-dark">📤Exportar BD</button>
+            <button class="admin my-2 mx-2 ms-auto btn btn-outline-secondary" id="loadFile2">📥Importar BD</button>
+            <button class="admin my-2 btn btn-outline-dark">📤Exportar BD</button>
         </div>
 
     </div>
@@ -101,8 +101,8 @@
         </div>
         <h3 class="m-0 d-inline-block ms-auto">
             <i id = "firstB" class="fas fa-solid fa-plus-circle text-success mr-auto p-2" role="button" title="Apartar Libro"></i>
-            <i class="fas fa-solid fa-edit text-primary mr-auto p-2" role="button" title="Editar"></i>
-            <i class="fas fa-solid fa-circle-minus text-danger mr-auto p-2" role="button" title="Dar de baja"></i>
+            <i id="edit" class="fas fa-solid fa-edit text-primary mr-auto p-2" role="button" title="Editar"></i>
+            <i id = "delete" class="fas fa-solid fa-circle-minus text-danger mr-auto p-2" role="button" title="Dar de baja"></i>
         </h3>
     </div>
     <div style="margin: 0px 0px 10px 15px;"><small class="lh-1" style="font-size: 10px; display: block; padding: 0px 5px;" id="disponibilidad">Disponible</small></div>
