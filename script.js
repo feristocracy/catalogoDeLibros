@@ -1,3 +1,4 @@
+//import {superuser} from "/login.js";
 /*-------------- CONSTANTS ------------------*/
 const addForm = document.getElementById("addForm");
 const bookshelf = document.getElementById("bookshelf");
@@ -26,6 +27,7 @@ const loadFile = document.getElementById("loadFile"); // to import CSV
 const loadFile2 = document.getElementById("loadFile2"); //
 const showEditForm = document.getElementById("showEditForm"); // div of edit book
 const editForm = document.getElementById("editForm"); // div of form
+const searchForm = document.getElementById("searchForm"); // the first form (search)
 
 /*----------------------------------------------*/
 
@@ -33,10 +35,21 @@ let tempID = 0; //temporary id for updating purposes
 let books = { }; // initializing object collection
 let clickNew = 0;
 let clickShow = 0;
+let queryResult = 0; //if there's no results on the searchform
+
 
 loadFile2.addEventListener("click", function() { loadFile.click();}) //
 
-//---EXPORT---//
+document.addEventListener("DOMContentLoaded", () => {
+                                                    if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
+                                                                                        books = JSON.parse(localStorage.getItem("books"));
+                                                                                        //Test place                                                                                        
+                                                                                        }
+                                                    });
+
+
+
+//-------------------EXPORT--------------------//
 const download = function(data) { // descarga el archivo en formato csv
                                 const blob = new Blob([data], { type: 'text/csv'});
                                 const url = window.URL.createObjectURL(blob);
@@ -48,18 +61,22 @@ const download = function(data) { // descarga el archivo en formato csv
                                 a.click();
                                 document.body.removeChild(a);
                                 };
-//------------//
+//-------------------------------------------//
 
+searchForm.addEventListener("submit", e =>  {
+                                            e.preventDefault();
+                                            searchBook(e); // to search the book
+                                            });
 
 bookshelf.addEventListener("click", e =>{
                                         actionButtons(e);
                                         });
 
-form.addEventListener("click", e => {
+form.addEventListener("click", e => { // listens form buttons 
                                     menuButtons(e);
                                     });
 
-db.addEventListener("click", e =>   {
+db.addEventListener("click", e =>   { // listens buttons to export or import db below
                                     dbButtons(e);
                                     });
 
@@ -78,7 +95,6 @@ editForm.addEventListener("click", e => {
                                         })
 
 
-
 const addBook = e =>{ //adds a new book
                     const book ={
                                 id: Date.now(),
@@ -87,7 +103,8 @@ const addBook = e =>{ //adds a new book
                                 publishing: inputPublishing.value, //
                                 year: inputYear.value, //
                                 inventory: inputInventory.value, //
-                                available: true
+                                available: true,
+                                searched: true
                                 }
 
                     books[book.id] = book; // we push the book into our bookshelf
@@ -107,8 +124,139 @@ const editBook = e =>  { //edit the selected book
                         showAllBooks();
                         }
 
+const searchBook = e => { // to search for the book
+                        queryResult = 0;
+                        bookshelf.innerHTML = "";
 
-const showAllBooks = e =>   {
+                        Object.values(books).find(query =>  {query.searched = false;
+                                                            if (inputTitleSearch.value !== "" && query.title.toLowerCase().includes(inputTitleSearch.value))
+                                                                {
+                                                                bookshelf.removeAttribute("style");
+                                                                seeAllButton.textContent = "🗃Ocultar todos";
+                                                                clickShow = 1;
+                                                                const clone = template.cloneNode(true); // first we clone our template
+                                                                clone.querySelector("#title").textContent = "Título: " + query.title; // we draw every field from our object
+                                                                clone.querySelector("#author").textContent = "Autor: " + query.author ; 
+                                                                clone.querySelector("#publishing").textContent = "Editorial: " + query.publishing; 
+                                                                clone.querySelector("#year").textContent = "Año: " + query.year;
+                                                                clone.querySelector("#disponibilidad").textContent = "Disponibles: " + query.inventory;
+                                                                if(query.inventory == 0) {
+                                                                                        query.available = false;
+                                                                                        }
+                                                                if (query.available == false){ // if the query isnt available
+                                                                                            clone.querySelector(".alert").classList.replace("alert-warning", "alert-secondary");
+                                                                                            clone.querySelector(".fa-plus-circle").classList.replace("fa-plus-circle", "fa-rotate-left");
+                                                                                            clone.getElementById("firstB").setAttribute("title", "Devolver libro");
+                                                                                            clone.querySelector(".text-success").classList.replace("text-success", "text-dark");
+                                                                                            }
+                                                                clone.querySelectorAll(".fas")[0].dataset.id = query.id; // references green plus button 
+                                                                clone.querySelectorAll(".fas")[1].dataset.id = query.id; // references edit blue button 
+                                                                clone.querySelectorAll(".fas")[2].dataset.id = query.id; // references red minus button
+                                                                clone.getElementById("disponibilidad").dataset.id = query.id;
+                                                                fragment.appendChild(clone);
+                                                                bookshelf.appendChild(fragment);
+                                                                query.searched = true;
+                                                                queryResult++;
+                                                                }
+                                                            if (inputAuthorSearch.value !== "" && query.author.toLowerCase().includes(inputAuthorSearch.value))
+                                                                {
+                                                                    bookshelf.removeAttribute("style");
+                                                                    seeAllButton.textContent = "🗃Ocultar todos";
+                                                                    clickShow = 1;
+                                                                    const clone = template.cloneNode(true); // first we clone our template
+                                                                    clone.querySelector("#title").textContent = "Título: " + query.title; // we draw every field from our object
+                                                                    clone.querySelector("#author").textContent = "Autor: " + query.author ; 
+                                                                    clone.querySelector("#publishing").textContent = "Editorial: " + query.publishing; 
+                                                                    clone.querySelector("#year").textContent = "Año: " + query.year;
+                                                                    clone.querySelector("#disponibilidad").textContent = "Disponibles: " + query.inventory;
+                                                                    if(query.inventory == 0) {
+                                                                                            query.available = false;
+                                                                                            }
+                                                                    if (query.available == false){ // if the query isnt available
+                                                                                                clone.querySelector(".alert").classList.replace("alert-warning", "alert-secondary");
+                                                                                                clone.querySelector(".fa-plus-circle").classList.replace("fa-plus-circle", "fa-rotate-left");
+                                                                                                clone.getElementById("firstB").setAttribute("title", "Devolver libro");
+                                                                                                clone.querySelector(".text-success").classList.replace("text-success", "text-dark");
+                                                                                                }
+                                                                    clone.querySelectorAll(".fas")[0].dataset.id = query.id; // references green plus button 
+                                                                    clone.querySelectorAll(".fas")[1].dataset.id = query.id; // references edit blue button 
+                                                                    clone.querySelectorAll(".fas")[2].dataset.id = query.id; // references red minus button
+                                                                    clone.getElementById("disponibilidad").dataset.id = query.id;
+                                                                    fragment.appendChild(clone);
+                                                                    bookshelf.appendChild(fragment);
+                                                                    query.searched = true;
+                                                                    queryResult++;
+                                                                }
+                                                            if (inputPublishingSearch.value !== "" && query.publishing.toLowerCase().includes(inputPublishingSearch.value))
+                                                                {
+                                                                //console.log("encontrado " + query.publishing);
+                                                                bookshelf.removeAttribute("style");
+                                                                seeAllButton.textContent = "🗃Ocultar todos";
+                                                                clickShow = 1;
+                                                                const clone = template.cloneNode(true); // first we clone our template
+                                                                clone.querySelector("#title").textContent = "Título: " + query.title; // we draw every field from our object
+                                                                clone.querySelector("#author").textContent = "Autor: " + query.author ; 
+                                                                clone.querySelector("#publishing").textContent = "Editorial: " + query.publishing; 
+                                                                clone.querySelector("#year").textContent = "Año: " + query.year;
+                                                                clone.querySelector("#disponibilidad").textContent = "Disponibles: " + query.inventory;
+                                                                if(query.inventory == 0) {
+                                                                                        query.available = false;
+                                                                                        }
+                                                                if (query.available == false){ // if the query isnt available
+                                                                                            clone.querySelector(".alert").classList.replace("alert-warning", "alert-secondary");
+                                                                                            clone.querySelector(".fa-plus-circle").classList.replace("fa-plus-circle", "fa-rotate-left");
+                                                                                            clone.getElementById("firstB").setAttribute("title", "Devolver libro");
+                                                                                            clone.querySelector(".text-success").classList.replace("text-success", "text-dark");
+                                                                                            }
+                                                                clone.querySelectorAll(".fas")[0].dataset.id = query.id; // references green plus button 
+                                                                clone.querySelectorAll(".fas")[1].dataset.id = query.id; // references edit blue button 
+                                                                clone.querySelectorAll(".fas")[2].dataset.id = query.id; // references red minus button
+                                                                clone.getElementById("disponibilidad").dataset.id = query.id;
+                                                                fragment.appendChild(clone);
+                                                                bookshelf.appendChild(fragment);
+                                                                query.searched = true;
+                                                                queryResult++;
+                                                                }
+                                                            if (inputYearSearch.value !== "" && query.year.toLowerCase().includes(inputYearSearch.value))
+                                                                {
+                                                                bookshelf.removeAttribute("style");
+                                                                seeAllButton.textContent = "🗃Ocultar todos";
+                                                                clickShow = 1;
+                                                                const clone = template.cloneNode(true); // first we clone our template
+                                                                clone.querySelector("#title").textContent = "Título: " + query.title; // we draw every field from our object
+                                                                clone.querySelector("#author").textContent = "Autor: " + query.author ; 
+                                                                clone.querySelector("#publishing").textContent = "Editorial: " + query.publishing; 
+                                                                clone.querySelector("#year").textContent = "Año: " + query.year;
+                                                                clone.querySelector("#disponibilidad").textContent = "Disponibles: " + query.inventory;
+                                                                if(query.inventory == 0) {
+                                                                                        query.available = false;
+                                                                                        }
+                                                                if (query.available == false){ // if the query isnt available
+                                                                                            clone.querySelector(".alert").classList.replace("alert-warning", "alert-secondary");
+                                                                                            clone.querySelector(".fa-plus-circle").classList.replace("fa-plus-circle", "fa-rotate-left");
+                                                                                            clone.getElementById("firstB").setAttribute("title", "Devolver libro");
+                                                                                            clone.querySelector(".text-success").classList.replace("text-success", "text-dark");
+                                                                                            }
+                                                                clone.querySelectorAll(".fas")[0].dataset.id = query.id; // references green plus button 
+                                                                clone.querySelectorAll(".fas")[1].dataset.id = query.id; // references edit blue button 
+                                                                clone.querySelectorAll(".fas")[2].dataset.id = query.id; // references red minus button
+                                                                clone.getElementById("disponibilidad").dataset.id = query.id;
+                                                                fragment.appendChild(clone);
+                                                                bookshelf.appendChild(fragment);
+                                                                query.searched = true;
+                                                                queryResult++;
+                                                                }
+                                                            })
+                        if (queryResult == 0)   {
+                                                bookshelf.removeAttribute("style");
+                                                bookshelf.innerHTML = `<div class="alert alert-light text-center">No se encontró lo que buscabas... 🍕</div>`;
+                                                Object.values(books).forEach(book =>{book.searched=true;});
+                                                }
+                        
+                        searchForm.reset();
+                        }
+
+const showAllBooks = e =>   { //show all books in bookshelf
                             bookshelf.removeAttribute("style");
                             seeAllButton.textContent = "🗃Ocultar todos";
                             clickShow = 1;
@@ -118,7 +266,7 @@ const showAllBooks = e =>   {
                                                                     return;
                                                                     }
                             bookshelf.innerHTML = ""; // we delete the object
-                            Object.values(books).forEach(book =>{
+                            Object.values(books).forEach(book =>{if(book.searched == true){
                                                                 const clone = template.cloneNode(true); // first we clone our template
                                                                 clone.querySelector("#title").textContent = "Título: " + book.title; // we draw every field from our object
                                                                 clone.querySelector("#author").textContent = "Autor: " + book.author ; 
@@ -139,17 +287,14 @@ const showAllBooks = e =>   {
                                                                 clone.querySelectorAll(".fas")[2].dataset.id = book.id; // references red minus button
                                                                 clone.getElementById("disponibilidad").dataset.id = book.id;
                                                                 fragment.appendChild(clone);
-                                                                });
+                                                                }});
                             bookshelf.appendChild(fragment);
                             }
 
-document.addEventListener("DOMContentLoaded", () => {
-                                                    if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
-                                                                                        books = JSON.parse(localStorage.getItem("books"));
-                                                                                        }
-                                                    });
 
-const showSearch = e => {
+
+
+const showSearch = e => { //shows the "add book" menu
                         if (clickNew == 0)  {
                                             showForm.removeAttribute("style");
                                             newButton.textContent = "🔙Cancelar";
@@ -164,7 +309,7 @@ const showSearch = e => {
                                             }
                         } 
 
-//IMPORT CSV//
+//-------------IMPORT CSV------------//
 const storageContent = content =>	{
                                     books = JSON.parse(content);
                                     showAllBooks();
@@ -181,7 +326,7 @@ const readFile = e => 	{
                                     reader.readAsText(file);
                         }
 document.getElementById("loadFile").addEventListener("change", readFile, false);
-//---------------------//
+//----------------------------------//
 
 
 const actionButtons = e =>  { // we set the action for every circle button
@@ -220,7 +365,7 @@ const actionButtons = e =>  { // we set the action for every circle button
                                                                         }
                             }
 
-const menuButtons = e =>{
+const menuButtons = e =>{ // setting action for main menu buttons
                         if (e.target.classList.contains("btn-warning")) {
                                                 if (clickShow == 0){
                                                                     seeAllButton.textContent = "🗃Ocultar todos";
@@ -231,6 +376,7 @@ const menuButtons = e =>{
                                                 if (clickShow == 1){
                                                                     seeAllButton.textContent = "📚Ver todos";
                                                                     bookshelf.style.display = "none";
+                                                                    Object.values(books).forEach(book =>{book.searched=true;}); // we set all books to "searched" status
                                                                     clickShow = 0;
                                                                     return;
                                                                     }
@@ -242,7 +388,7 @@ const menuButtons = e =>{
                         e.stopPropagation();
                         }
 
-const dbButtons = e =>  {
+const dbButtons = e =>  { // sets action for db buttons below
                         if (e.target.classList.contains("btn-outline-dark")){ // if exports DB
                                                                             download(JSON.stringify(books));
                                                                             return;
