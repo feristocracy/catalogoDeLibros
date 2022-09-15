@@ -33,6 +33,7 @@ const searchForm = document.getElementById("searchForm"); // the first form (sea
 
 let tempID = 0; //temporary id for updating purposes
 let books = { }; // initializing object collection
+let users = { }; //initializing user role
 let clickNew = 0;
 let clickShow = 0;
 let queryResult = 0; //if there's no results on the searchform
@@ -43,6 +44,9 @@ loadFile2.addEventListener("click", function() { loadFile.click();}) //
 document.addEventListener("DOMContentLoaded", () => {
                                                     if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
                                                                                         books = JSON.parse(localStorage.getItem("books"));
+                                                                                        users = JSON.parse(localStorage.getItem("users"));
+                                                                                        let admin = users[3].adminRole;
+                                                                                        console.log(admin);
                                                                                         //Test place                                                                                        
                                                                                         }
                                                     });
@@ -63,12 +67,12 @@ const download = function(data) { // descarga el archivo en formato csv
                                 };
 //-------------------------------------------//
 
-searchForm.addEventListener("submit", e =>  {
+searchForm.addEventListener("submit", e =>  { // listens the "search" button
                                             e.preventDefault();
                                             searchBook(e); // to search the book
                                             });
 
-bookshelf.addEventListener("click", e =>{
+bookshelf.addEventListener("click", e =>{ // listens the buttons of every circle shaped button
                                         actionButtons(e);
                                         });
 
