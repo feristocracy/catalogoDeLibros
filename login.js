@@ -6,26 +6,7 @@ const userPass = "mamarre";
 const loginForm = document.getElementById("loginForm");
 const inputEmail = document.getElementById("email");
 const inputPass = document.getElementById("pass");
-/*-----------------------------------------*/
-
-/* const users =   { // load users to localeStorage
-                1: {
-                    id: 1,
-                    email: "webmaster@coolbooks.com",
-                    password: "daBoss",
-                    admin: true
-                    },
-                2:  {
-                    id: 2,
-                    email: "nerdguy@coolbooks.com",
-                    password: "virgin.69",
-                    admin: false
-                    },
-                3:  {
-                    adminRole: false
-                    }
-                }
-localStorage.setItem("users", JSON.stringify(users));  */            
+/*-----------------------------------------*/          
 
 let users = {};
 

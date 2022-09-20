@@ -1,4 +1,3 @@
-//import {superuser} from "/login.js";
 /*-------------- CONSTANTS ------------------*/
 const addForm = document.getElementById("addForm");
 const bookshelf = document.getElementById("bookshelf");
@@ -28,39 +27,36 @@ const loadFile2 = document.getElementById("loadFile2"); //
 const showEditForm = document.getElementById("showEditForm"); // div of edit book
 const editForm = document.getElementById("editForm"); // div of form
 const searchForm = document.getElementById("searchForm"); // the first form (search)
-
 /*----------------------------------------------*/
 
+/*----------------- VARIABLES ----------------------*/
 let tempID = 0; //temporary id for updating purposes
 let books = { }; // initializing object collection
 let users = { }; //initializing user role
 let clickNew = 0;
 let clickShow = 0;
 let queryResult = 0; //if there's no results on the searchform
-let admin = true;
+let admin = true; //admin is true by default
+/*--------------------------------------------------*/
 
-loadFile2.addEventListener("click", function() { loadFile.click();}) //
 
-document.addEventListener("DOMContentLoaded", () => {
+
+document.addEventListener("DOMContentLoaded", () => { //actions for when the dom content has fully loaded
                                                     if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
                                                                                         books = JSON.parse(localStorage.getItem("books"));
                                                                                         users = JSON.parse(localStorage.getItem("users"));
                                                                                         //Test place                                                                                        
                                                                                         }
-                                                    admin = users[3].adminRole;
-                                                    if (admin == false) {
+                                                    admin = users[3].adminRole; // we set true or false depending of the role
+                                                    if (admin == false) { // if not admin, we cannot see some buttons
                                                                         document.querySelectorAll(".admin")[0].style.display = "none";
                                                                         document.querySelectorAll(".admin")[1].style.display = "none";
                                                                         document.querySelectorAll(".admin")[2].style.display = "none";
                                                                         }
                                                     });
                                                 
-
-                                                    
-                                                        
-
 //-------------------EXPORT--------------------//
-const download = function(data) { // descarga el archivo en formato csv
+const download = function(data) { // descarga el archivo en formato csv / we download the file on csv format
                                 const blob = new Blob([data], { type: 'text/csv'});
                                 const url = window.URL.createObjectURL(blob);
                                 const a = document.createElement('a');
@@ -72,6 +68,10 @@ const download = function(data) { // descarga el archivo en formato csv
                                 document.body.removeChild(a);
                                 };
 //-------------------------------------------//
+
+
+/*----------------EVENT LISTENERS---------------*/
+loadFile2.addEventListener("click", function() { loadFile.click();}) // listens the load db button
 
 searchForm.addEventListener("submit", e =>  { // listens the "search" button
                                             e.preventDefault();
@@ -100,11 +100,13 @@ editForm.addEventListener("submit", e => { // listens Edit button
                                         editBook(e); // add the book
                                         });
 
-editForm.addEventListener("click", e => {
+editForm.addEventListener("click", e => { // listens the buttons when you edit a book
                                         editMenuButtons(e);
                                         })
+/*----------------------------------------------*/
 
 
+/*---------------FUNCTIONS-------------------------*/
 const addBook = e =>{ //adds a new book
                     const book ={
                                 id: Date.now(),
@@ -310,9 +312,6 @@ const showAllBooks = e =>   { //show all books in bookshelf
                             bookshelf.appendChild(fragment);
                             }
 
-
-
-
 const showSearch = e => { //shows the "add book" menu
                         if (clickNew == 0)  {
                                             showForm.removeAttribute("style");
@@ -327,6 +326,8 @@ const showSearch = e => { //shows the "add book" menu
                                             return;
                                             }
                         } 
+/*---------------------------------------------------*/
+
 
 //-------------IMPORT CSV------------//
 const storageContent = content =>	{
@@ -348,6 +349,7 @@ document.getElementById("loadFile").addEventListener("change", readFile, false);
 //----------------------------------//
 
 
+/*----------------ACTION BUTTONS----------------*/
 const actionButtons = e =>  { // we set the action for every circle button
                             if (e.target.classList.contains("fa-plus-circle"))  { // if we click green plus button
                                                                                /*  if (books[e.target.dataset.id].inventory == 0) { // if there's no books, is not available
@@ -420,3 +422,4 @@ const editMenuButtons = e =>{ // if we click on a button of the edit book menu
                                                                             showEditForm.style.display = "none";
                                                                             }
                             }
+/*---------------------------------------------*/
