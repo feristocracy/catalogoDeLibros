@@ -34,7 +34,7 @@
     
 <!------------------- Modal ---------------->
 <div class="modal fade" id="modalUser"  aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Crear Usuario</h5>
@@ -61,33 +61,48 @@
             <div class="row mb-3">
                 <label for="createPass2" class="col-3 col-form-label">Confirma Password</label>
                 <div class="col-9">
-                    <input type="password" class="form-control" id="passCreate2" placeholder="Repite tu contraseña" required>
+                    <input type="password" class="form-control" id="passCreate2" placeholder="Repite la contraseña" required>
                 </div>
             </div>
 
+            <div class="row px-3 justify-content-start">
+            <div class="form-check mb-3 col-2">
+              <input class="form-check-input" type="radio" name="Role" id="flexRadioDefault1" value= "user" checked="checked">
+              <label class="form-check-label ml-5" for="flexRadioDefault1">
+                Usuario
+              </label>
+            </div>
+            <div class="form-check mb-3 col-2">
+              <input class="form-check-input" type="radio" name="Role" id="flexRadioDefault2" value= "admin">
+              <label class="form-check-label" for="flexRadioDefault2">
+                Administrador
+              </label>
+            </div>
+            </div>
+
             <div class="row mb-3">
-                <div class="col-9 offset-3">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <div class="col-9 offset-7">
+                    <button type="button" class="btn btn-secondary " data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary" name="button">Confirmar</button>
                 </div>
             </div>
           </form>
         </div>
 
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <input class="form-check-input" type="radio" name="Role" id="flexRadioDefault1" value= "user" checked="checked">
                 <label class="form-check-label" for="flexRadioDefault1">
                   Usuario
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input" type="radio" name="Role" id="flexRadioDefault2" value= "admin">
                 <label class="form-check-label" for="flexRadioDefault2">
                   Administrador
                 </label>
               </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

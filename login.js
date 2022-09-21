@@ -8,8 +8,12 @@ const inputEmail = document.getElementById("email");
 const inputPass = document.getElementById("pass");
 const createNewUser = document.getElementById("createNewUser");
 const inputNewPass = document.getElementById("passCreate");
+const inputNewPass2 = document.getElementById("passCreate2");
 const inputNewEmail = document.getElementById("userCreate");
-const roleRadio = document.querySelector('input[name="flexRadioDefault"]:checked').value;
+const radio = document.getElementsByName("Role");
+const passCreate2 = document.getElementById("passCreate2");
+const flexRadioDefault1 = document.getElementById("flexRadioDefault1");
+const flexRadioDefault2 = document.getElementById("flexRadioDefault2");
 /*-----------------------------------------*/          
 
 
@@ -21,7 +25,7 @@ let users = {};
 
 
 document.addEventListener("DOMContentLoaded", () => {
-                                                    if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there
+                                                    if (localStorage.getItem("users"))	{// if there's an object on localStorage we retrieve it from there
                                                                                         users = JSON.parse(localStorage.getItem("users"));
                                                                                         //Test place                                                                                     
                                                                                         }
@@ -38,27 +42,23 @@ loginForm.addEventListener("submit", e =>   { // listens the submit button of th
                                             });
 
 loginForm.addEventListener("click", e =>{
+                                        createNewUser.reset();
                                         createUser(e);
                                         })                                            
 
 const startSession = e =>   {
-                            if (inputEmail.value == users[1].email && inputPass.value == users[1].password) { // if the mail and password matches
-                                                                                                loginForm.reset();
-                                                                                                users[3].adminRole = true;
-                                                                                                localStorage.setItem("users", JSON.stringify(users));
-                                                                                                window.location.replace('home.html');
-                                                                                                return;
-                                                                                                }
-                            if (inputEmail.value == users[2].email && inputPass.value == users[2].password) { // if the mail and password matches
-                                                                                                loginForm.reset();
-                                                                                                users[3].adminRole = false;
-                                                                                                localStorage.setItem("users", JSON.stringify(users));
-                                                                                                window.location.replace('home.html');
-                                                                                                return;
-                                                                                                }                                                                            
-                                                                                                
-                            alert("Usuario no encontrado o contraseña incorrecta...");
+                             Object.values(users).find(query => {
+                                                                if(query.userEmail == inputEmail.value && query.userPass == inputPass.value)
+                                                                {
+                                                                    users[0] = query.admin;
+                                                                    localStorage.setItem("users", JSON.stringify(users));
+                                                                    window.location.replace('home.html');
+                                                                    return;
+                                                                }
+                                                                })
+
                             loginForm.reset();
+                            alert("Usuario no encontrado o contraseña incorrecta...");
                             }
                                               
 
@@ -74,13 +74,28 @@ const createUser = e => {
                         }                            
 
 const addUser = e =>{
-                    const user ={
-                                userEmail: inputEmail.value,
-                                userPass: inputPass.value,
-                                }
-                    console.log(user);
-                    console.log(roleRadio);
 
-/* books[book.id] = book; // we push the book into our bookshelf */
-addForm.reset(); // we reset our form
+                    passCreate2.placeholder = "Repite la contraseña";
+
+                    if (inputNewPass.value !== inputNewPass2.value) {
+                            inputNewPass2.value = "";
+                            passCreate2.placeholder = "las contraseñas no coinciden";
+                            return;
+                    }
+                    let roleRadio;
+                    const user ={
+                                id: Date.now(),
+                                userEmail: inputNewEmail.value,
+                                userPass: inputNewPass.value,
+                                admin: flexRadioDefault2.checked,
+                                }
+                                
+                    $('#modalUser').modal('hide');
+                    createNewUser.reset(); // we reset our form
+
+                    users[user.id] = user;
+                    users[0] = user.admin;
+                    localStorage.setItem("users", JSON.stringify(users));
+                    console.log(users);
+
                     }                        

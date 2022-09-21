@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => { //actions for when the dom
                                                                                         users = JSON.parse(localStorage.getItem("users"));
                                                                                         //Test place                                                                                        
                                                                                         }
-                                                    admin = users[3].adminRole; // we set true or false depending of the role
+                                                    admin = users[0]; // we set true or false depending of the role
                                                     if (admin == false) { // if not admin, we cannot see some buttons
                                                                         document.querySelectorAll(".admin")[0].style.display = "none";
                                                                         document.querySelectorAll(".admin")[1].style.display = "none";
