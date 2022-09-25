@@ -14,6 +14,7 @@ const radio = document.getElementsByName("Role");
 const passCreate2 = document.getElementById("passCreate2");
 const flexRadioDefault1 = document.getElementById("flexRadioDefault1");
 const flexRadioDefault2 = document.getElementById("flexRadioDefault2");
+const userError = document.getElementById("userError");
 /*-----------------------------------------*/          
 
 
@@ -21,8 +22,8 @@ const flexRadioDefault2 = document.getElementById("flexRadioDefault2");
 
 
 let users = {};
-
-
+let admin = true;
+let userWrong = true; 
 
 document.addEventListener("DOMContentLoaded", () => {
                                                     if (localStorage.getItem("users"))	{// if there's an object on localStorage we retrieve it from there
@@ -50,15 +51,22 @@ const startSession = e =>   {
                              Object.values(users).find(query => {
                                                                 if(query.userEmail == inputEmail.value && query.userPass == inputPass.value)
                                                                 {
-                                                                    users[0] = query.admin;
-                                                                    localStorage.setItem("users", JSON.stringify(users));
+                                                                    admin = query.admin;
+                                                                    localStorage.setItem("admin", JSON.stringify(admin));
+                                                                    userWrong = false;
+                                                                    userError.innerHTML = "Iniciando sesión";
+                                                                    userError.classList.remove('text-danger');
+                                                                    userError.classList.add('text-success');
                                                                     window.location.replace('home.html');
-                                                                    return;
                                                                 }
                                                                 })
 
                             loginForm.reset();
-                            alert("Usuario no encontrado o contraseña incorrecta...");
+
+                            if (userWrong){userError.innerHTML = "Usuario no encontrado o contraseña incorrecta"}
+
+                            console.log("no encontrado");
+                            return;
                             }
                                               
 
@@ -74,7 +82,6 @@ const createUser = e => {
                         }                            
 
 const addUser = e =>{
-
                     passCreate2.placeholder = "Repite la contraseña";
 
                     if (inputNewPass.value !== inputNewPass2.value) {
@@ -82,7 +89,6 @@ const addUser = e =>{
                             passCreate2.placeholder = "las contraseñas no coinciden";
                             return;
                     }
-                    let roleRadio;
                     const user ={
                                 id: Date.now(),
                                 userEmail: inputNewEmail.value,
@@ -90,12 +96,15 @@ const addUser = e =>{
                                 admin: flexRadioDefault2.checked,
                                 }
                                 
-                    $('#modalUser').modal('hide');
+                                
+
                     createNewUser.reset(); // we reset our form
 
                     users[user.id] = user;
                     users[0] = user.admin;
                     localStorage.setItem("users", JSON.stringify(users));
-                    console.log(users);
 
+                    $("#modalSuccess").modal()
+                        
+                    return;
                     }                        
