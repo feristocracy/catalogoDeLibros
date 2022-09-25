@@ -32,22 +32,19 @@ const searchForm = document.getElementById("searchForm"); // the first form (sea
 /*----------------- VARIABLES ----------------------*/
 let tempID = 0; //temporary id for updating purposes
 let books = { }; // initializing object collection
-let users = { }; //initializing user role
+let admin = true; //initializing user admin
 let clickNew = 0;
 let clickShow = 0;
 let queryResult = 0; //if there's no results on the searchform
-let admin = true; //admin is true by default
 /*--------------------------------------------------*/
 
 
 
 document.addEventListener("DOMContentLoaded", () => { //actions for when the dom content has fully loaded
+                                                    admin = JSON.parse(localStorage.getItem("admin"));
                                                     if (localStorage.getItem("books"))	{// if there's an object on localStorage we retrieve it from there	
-                                                                                        books = JSON.parse(localStorage.getItem("books"));
-                                                                                        users = JSON.parse(localStorage.getItem("users"));
-                                                                                        //Test place                                                                                        
+                                                                                        books = JSON.parse(localStorage.getItem("books"));                                                
                                                                                         }
-                                                    admin = users[0]; // we set true or false depending of the role
                                                     if (admin == false) { // if not admin, we cannot see some buttons
                                                                         document.querySelectorAll(".admin")[0].style.display = "none";
                                                                         document.querySelectorAll(".admin")[1].style.display = "none";
